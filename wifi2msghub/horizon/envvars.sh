@@ -1,5 +1,6 @@
-
-export HZN_DEVICE_TOKEN='wifi_scan_sample'
+export HZN_ORG_ID='<HZN_ORG_ID>'
+export HZN_DEVICE_ID='<HZN_DEVICE_ID>'
+export HZN_DEVICE_TOKEN='<HZN_DEVICE_TOKEN>'
 export HZN_EXCHANGE_USER_AUTH='iamapikey:<YOUR API KEY>'
 export MYDOMAIN=ibm.sample.wifi2msghub
 export HZN_PATTERN=wifi2msghub
