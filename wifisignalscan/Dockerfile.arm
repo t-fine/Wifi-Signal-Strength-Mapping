@@ -1,0 +1,13 @@
+FROM ubuntu:bionic
+
+RUN apt update && apt install -y vim jq
+      
+FROM ubuntu:18.04
+ 
+RUN apt update && apt install -y socat && apt install -y vim jq
+       
+COPY service.sh /
+COPY start.sh /
+WORKDIR /
+CMD ./start.sh
+

@@ -1,0 +1,11 @@
+{
+    "global": [],
+    "services": [
+        {
+            "org": "$HZN_ORG_ID",
+            "url": "$MYDOMAIN.$WIFISIGNALSCAN_NAME",
+            "versionRange": "[0.0.0,INFINITY]",
+            "variables": {}
+        }
+    ]
+}

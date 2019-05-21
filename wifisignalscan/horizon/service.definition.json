@@ -1,0 +1,28 @@
+{
+    "org": "$HZN_ORG_ID",
+    "label": "$WIFISIGNALSCAN_NAME",
+    "description": "SampleHorizon service that repeatedly scans for wifi signals, logs the location of each scan, ans sends it to IBM Message Hub",
+    "public": true,
+    "url": "$MYDOMAIN.$WIFISIGNALSCAN_NAME",
+    "version": "$WIFISIGNALSCAN_VERSION",
+    "arch": "$ARCH",
+    "sharable": "singleton",
+    "matchHardware": null,
+    "requiredServices":[],
+    "userInput":[],
+    "deployment": {
+        "services": {
+            "wifisignalscan": {
+                "environment": [
+                    "MSGHUB_BROKER_URL=$MSGHUB_BROKER_URL"
+                ],
+                "image": "$DOCKER_HUB_ID/${ARCH}_$WIFISIGNALSCAN_NAME:$WIFISIGNALSCAN_VERSION",
+                "privileged": true,
+                "devices": ["/proc/net/wireless:/proc/net/wireless"]
+            }
+        }
+    },
+    "deploymentSignature": "",
+    "imageStore": null
+
+}
