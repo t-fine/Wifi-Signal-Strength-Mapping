@@ -1,0 +1,30 @@
+{
+    "org": "troy.fine@ibm.com",
+    "label": "wifisignalscan",
+    "description": "SampleHorizon service that repeatedly scans for wifi signals, logs the location of each scan, ans sends it to IBM Message Hub",
+    "public": true,
+    "documentation": "",
+    "url": "ibm.sample.wifisignalscan.wifisignalscan",
+    "version": "1.1.1",
+    "arch": "arm",
+    "sharable": "singleton",
+    "matchHardware": {},
+    "requiredServices": [],
+    "userInput": [],
+    "deployment": {
+        "services": {
+            "wifisignalscan": {
+                "devices": [
+                    "/proc/net/wireless:/proc/net/wireless"
+                ],
+                "environment": [
+                    "MSGHUB_BROKER_URL=kafka02-prod02.messagehub.services.us-south.bluemix.net:9093,kafka01-prod02.messagehub.services.us-south.bluemix.net:9093,kafka04-prod02.messagehub.services.us-south.bluemix.net:9093,kafka05-prod02.messagehub.services.us-south.bluemix.net:9093,kafka03-prod02.messagehub.services.us-south.bluemix.net:9093"
+                ],
+                "image": "troyfine/arm_wifisignalscan@sha256:a943201a8d02fc7e71b3af8755fe52f93c261544d17c13ea8d230562d2ff8a47",
+                "privileged": true
+            }
+        }
+    },
+    "deploymentSignature": "",
+    "imageStore": {}
+}

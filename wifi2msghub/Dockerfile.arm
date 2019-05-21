@@ -1,0 +1,43 @@
+# STAGE 0
+FROM arm32v6/alpine:latest
+
+# Install stuff needed for build, and a few items for convenience
+RUN apk update && apk add build-base autoconf automake libtool git make curl-dev curl jq bash gdb musl-dev
+
+# STEPS TO INSTALL JSON-C
+RUN git clone https://github.com/json-c/json-c.git
+# RUN apt install -y autoconf automake libtool
+# RUN apt install -y libcurl3-dev
+RUN cd json-c; ./autogen.sh
+RUN cd json-c; ./configure
+RUN cd json-c; make
+RUN cd json-c; make install
+
+# Steps to build test1
+COPY test1.c /
+RUN gcc -g test1.c -o test1 -lcurl -ljson-c
+
+
+# STAGE 1
+FROM arm32v6/alpine:latest
+
+WORKDIR /
+
+# Install libcurl shared library, needed by test1 at runtime (curl-dev package)
+RUN apk update
+RUN apk add curl-dev curl jq bash musl
+
+ENV LD_LIBRARY_PATH /lib:/usr/lib:/usr/local/lib/
+
+RUN cp /lib/ld-musl-armhf.so.1 /lib/libc.musl-armhf.so.1
+RUN cp /lib/ld-musl-armhf.so.1 /usr/lib/libc.musl-armhf.so.1
+RUN ldconfig /etc/ld.so.conf.d
+COPY tmp/arm/*.rsa.pub /etc/apk/keys/
+COPY tmp/arm/kafkacat-*.apk /
+RUN apk add /kafkacat-*.apk && rm kafkacat-*.apk
+
+# Copy test1 and its required json-c shared library from the stage 0 container
+COPY --from=0 /usr/local/lib/libjson-c.so.4.0.0 /usr/local/lib/libjson-c.so.4
+COPY --from=0 /test1 /
+CMD ./test1
+#CMD [ env LD_LIBRARY_PATH=/usr/local/lib/ /test1  ]

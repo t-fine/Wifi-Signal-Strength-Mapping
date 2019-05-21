@@ -1,0 +1,78 @@
+{
+    "org": "$HZN_ORG_ID",
+    "label": "$WIFI2MSGHUB_NAME",
+    "description": "SampleHorizon service that repeatedly scans for wifi signals, logs the location of each scan, ans sends it to IBM Message Hub",
+    "public": true,
+    "documentation": "",
+    "url": "$MYDOMAIN.$WIFI2MSGHUB_NAME",
+    "version": "$WIFI2MSGHUB_VERSION",
+    "arch": "$ARCH",
+    "sharable": "singleton",
+    "matchHardware": null,
+    "requiredServices": [
+        {
+            "url": "gps",
+            "org": "mdye@us.ibm.com",
+            "version": "2.0.0",
+            "arch": "arm"
+        },
+        {
+            "url": "ibm.sample.wifisignalscan.wifisignalscan",
+            "org": "troy.fine@ibm.com",
+            "version": "1.1.1",
+            "arch": "arm"
+        }
+    ],
+    "userInput": [
+        {
+            "name": "MSGHUB_API_KEY",
+            "label": "The API key to use when sending message to your instance of IBM Message Hub",
+            "type": "string",
+            "defaultValue": ""
+        },
+        {
+            "name": "HZN_USE_GPS",
+            "label": "use the gps module or not",
+            "type": "boolean",
+            "defaultValue": "true"
+        },
+        {
+            "name": "SAMPLE_INTERVAL",
+            "label": "the number of seconds between samples",
+            "type": "int",
+            "defaultValue": "5"
+        },
+        {
+            "name": "MOCK",
+            "label": "mock the wifi signal data",
+            "type": "boolean",
+            "defaultValue": "false"
+        },
+        {
+            "name": "PUBLISH",
+            "label": "publish the WiFi data collected to the IBM Message Hub",
+            "type": "boolean",
+            "defaultValue": "true"
+        },
+        {
+            "name": "VERBOSE",
+            "label": "log everything that happens",
+            "type": "string",
+            "defaultValue": "0"
+        }
+    ],
+    "deployment": {
+        "services": {
+            "wifi2msghub": {
+                "devices": [],
+                "environment": [
+                    "MSGHUB_BROKER_URL=$MSGHUB_BROKER_URL"
+                ],
+                "image": "$DOCKER_HUB_ID/${ARCH}_$WIFI2MSGHUB_NAME:$WIFI2MSGHUB_VERSION",
+                "privileged": true
+            }
+        }
+    },
+    "deploymentSignature": "",
+    "imageStore": null
+}

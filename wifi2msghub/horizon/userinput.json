@@ -1,0 +1,26 @@
+{
+    "services": [
+        {
+            "org": "$HZN_ORG_ID",
+            "url": "$MYDOMAIN.$WIFI2MSGHUB_NAME",
+            "versionRange": "[0.0.0,INFINITY]",
+            "variables": {
+                "MSGHUB_API_KEY": "$MSGHUB_API_KEY",
+                "HZN_USE_GPS": true,
+                "MOCK": false,
+                "PUBLISH": true,
+                "SAMPLE_INTERVAL": 2,
+                "VERBOSE": "1"
+            }
+        },
+        {
+            "org": "mdye@us.ibm.com",
+            "url": "gps",
+            "versionRange": "[0.0.0,INFINITY]",
+            "variables": {
+                "HZN_USE_GPS": true
+            }
+        }
+    ]
+}
+

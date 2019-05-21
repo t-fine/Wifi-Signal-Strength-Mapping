@@ -1,0 +1,58 @@
+{
+    "org": "mdye@us.ibm.com",
+    "label": "GPS for arm",
+    "description": "Provides the edge node location via a REST API from a GPS sensor, environment variables, or the IP address",
+    "public": true,
+    "documentation": "",
+    "url": "gps",
+    "version": "2.0.0",
+    "arch": "arm",
+    "sharable": "singleton",
+    "matchHardware": {},
+    "requiredServices": [],
+    "userInput": [
+        {
+            "name": "HZN_GPS_PORT",
+            "label": "REST API port",
+            "type": "int",
+            "defaultValue": "31779"
+        },
+        {
+            "name": "HZN_USE_GPS",
+            "label": "Use GPS hardware, or not",
+            "type": "boolean",
+            "defaultValue": "true"
+        },
+        {
+            "name": "HZN_LAT",
+            "label": "Manually user-specified North latitude, or 0.0 when using other means",
+            "type": "float",
+            "defaultValue": "0.0"
+        },
+        {
+            "name": "HZN_LON",
+            "label": "Manually user-specified East longitude, or 0.0 when using other means",
+            "type": "float",
+            "defaultValue": "0.0"
+        },
+        {
+            "name": "HZN_LOCATION_ACCURACY_KM",
+            "label": "Manually user-specified radial distance for obfuscation. Ignored if HZN_USE_GPS is true..",
+            "type": "float",
+            "defaultValue": "0.0"
+        }
+    ],
+    "deployment": {
+        "services": {
+            "gps": {
+                "devices": [
+                    "/dev/bus/usb/001/001:/dev/bus/usb/001/001"
+                ],
+                "image": "ibmosquito/arm_gps@sha256:7a55ae0ad48c60ea26ae96bd1922c21080841c13723c972d663edd3d0a07fe54",
+                "privileged": true
+            }
+        }
+    },
+    "deploymentSignature": "",
+    "imageStore": {}
+}
