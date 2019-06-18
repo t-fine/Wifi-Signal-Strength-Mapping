@@ -1,0 +1,119 @@
+/**
+  *
+  * main() will be run when you invoke this action
+  *
+  * @param Cloud Functions actions accept a single parameter, which must be a JSON object.
+  *
+  * @return The output of this action, which must be a JSON object.
+  *
+  */
+function main(params) {
+    const mysql = require('mysql');
+    return new Promise((resolve, reject) => {
+        if (!params.messages || !params.messages[0] || !params.messages[0].value) {
+            reject("Invalid arguments. Must include 'messages' JSON array with 'value' field");
+        }
+        
+        let nodeid = 'SCANNER_0';
+        let quality = '';
+        let rssi = '';
+        let essid = '';
+        let latitude = '';
+        let longitude = '';
+        let elevation = '';
+        let rows = '';
+        
+        var msg = params.messages[0].value;
+        
+        const connection = mysql.createConnection(
+            {
+                host: 'your-mysql-host',
+                port: 'your-mysql-port',
+                user: 'your-mysql-user',
+                password: 'your-mysql-password',
+                database: 'your-database-name'
+            }   
+        );      
+            
+        connection.connect(function(err){
+            if (err) {
+                console.log("connection error");
+                connection.destroy();
+            }
+        }); 
+        
+        nodeid = nodeid || "";
+        quality = quality || "";
+        rssi = rssi || "";
+        essid = msg.essid || "";
+        latitude = msg.latitude || "";
+        longitude = msg.longitude || "";
+        elevation = msg.elevation || "";
+        
+        var item = 0;
+        var log = 0;
+        console.log(msg);
+        var key = 0;
+        for(key in msg) {
+            if(msg[key] == ":"){ 
+                item += 1;
+                ++key;
+                log = 1;
+            }
+            if(msg[key] == ","){ 
+                ++key;
+                log = 0;
+            }
+            if(item == 1 && log == 1){ //looking for quality
+                quality += msg[key];
+            }
+            if(item == 2 && log == 1){ //looking for rssi
+                rssi += msg[key];
+            }
+            if(item == 3 && log == 1){ //looking for essid
+                essid += msg[key];
+            }
+            if(item == 4 && log == 1){ //looking for latitude
+                latitude += msg[key];
+            }
+            if(item == 5 && log == 1){ //looking for longitude
+                longitude += msg[key];
+            }
+            if(item == 6 && log == 1){ //looking for elevation
+                if(msg[key] == "}" || msg[key] == "\\" || msg[key] == "\""){
+                    continue;
+                }
+                else {elevation += msg[key];}
+            }
+        }
+        
+        connection.query("INSERT INTO wifidata (nodeid,quality,rssi,essid,latitude,longitude,elevation) VALUES (?,?,?,?,?,?,?)", [ nodeid,quality,rssi,essid,latitude,longitude,elevation ], function(err,qrows) {
+            console.log(quality);
+            console.log(rssi);   
+            console.log(essid);
+            console.log(latitude); 
+            console.log(longitude);
+            console.log(elevation); 
+            if (err) {
+                console.log("query error");
+                connection.destroy();
+            } else {
+                rows = qrows;
+                connection.end();
+            }   
+        }); 
+            
+        resolve({
+            
+            nodeid,
+            quality,
+            rssi,
+            essid,
+            latitude,
+            longitude,
+            elevation,
+            rows
+            
+        });
+    });
+}
