@@ -8,6 +8,7 @@ RUN apk update && apk add build-base autoconf automake libtool git make curl-dev
 RUN git clone https://github.com/json-c/json-c.git
 # RUN apt install -y autoconf automake libtool
 # RUN apt install -y libcurl3-dev
+RUN cd json-c; git checkout 96ab2f6596
 RUN cd json-c; ./autogen.sh
 RUN cd json-c; ./configure
 RUN cd json-c; make
@@ -15,7 +16,7 @@ RUN cd json-c; make install
 
 # Steps to build test1
 COPY test1.c /
-RUN gcc -g test1.c -o test1 -lcurl -ljson-c
+RUN gcc -Ijson-c -g test1.c -o test1 -lcurl -ljson-c
 
 
 # STAGE 1
