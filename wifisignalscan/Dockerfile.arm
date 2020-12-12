@@ -9,5 +9,7 @@ RUN apt update && apt install -y socat && apt install -y vim jq
 COPY service.sh /
 COPY start.sh /
 WORKDIR /
+RUN chmod +x start.sh
+RUN chmod +x service.sh
 CMD ./start.sh
 
